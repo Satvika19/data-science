@@ -1,0 +1,91 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import MinMaxScaler
+df = pd.read_csv("C:\\Users\\my pc\\Downloads\\
+CarPrice_Assignment.csv")
+df.head()
+
+
+
+df=df[['symboling','wheelbase','carlength','carwidth','carheight','cur
+bweight','boreratio','stroke','compressionratio','horsepower','peakrpm
+','citympg','highwaympg','price']]
+df.head()
+
+
+
+Feature Scaling
+To bring the data columns in the same unit and range
+scaler = MinMaxScaler()
+df_scaled=df.copy()
+col_names=['peakrpm','carlength']
+features=df_scaled[col_names]
+df_scaled[col_names] = scaler.fit_transform(features.values)
+df_scaled
+
+
+
+y = df['wheelbase']
+x = df['carlength']
+plt.scatter(x,y)
+
+
+
+y = df_scaled['wheelbase']
+x = df_scaled['carlength']
+plt.scatter(x,y)
+
+
+scaler = MinMaxScaler(feature_range=(5, 10))
+df_scaled[col_names] = scaler.fit_transform(features.values)
+df_scaled
+
+
+
+y = df_scaled['wheelbase']
+x = df_scaled['carlength']
+plt.scatter(x,y)
+
+
+
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+df_scaled[col_names] = scaler.fit_transform(features.values)
+df_scaled
+
+
+
+y = df_scaled['wheelbase']
+x = df_scaled['carlength']
+plt.scatter(x,y)
+
+
+
+df.skew()
+
+
+
+sns.kdeplot(df.compressionratio);
+
+sns.kdeplot(df.price);
+
+
+import scipy.stats as stats
+import pylab
+def normality(data,feature):
+ plt.figure(figsize=(15,5))
+ plt.subplot(1,2,1)
+ sns.kdeplot(data[feature])
+ plt.subplot(1,2,2)
+ stats.probplot(data[feature],plot=pylab)
+ plt.show()
+normality(df,'price')
+
+
+
+Square Root Transformation
+This transformation will take the square root of the Price column i.e sqrt(Price).
+df['price_sqroot']=np.sqrt(df.price)
+normality(df,'price_sqroot')
